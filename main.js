@@ -65,3 +65,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Вставь свои данные сюда
+const TG_TOKEN = "8306395185:AAH04mLgczytb2rv_qUIks-vktY7Dhk1u_8";
+const TG_CHAT_ID = "6516537861";
+
+document.getElementById('applyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // 1. Собираем данные из полей
+    const job = document.getElementById('jobTitleInput').value;
+    const name = this.querySelector('input[placeholder="Ваше Имя"]').value;
+    const contact = this.querySelector('input[placeholder="Telegram"]').value;
+    const bio = this.querySelector('textarea').value;
+
+    // 2. Формируем красивый текст для Telegram
+    const fullMessage = `
+🚀 **Новая заявка в Mefedron AG**
+━━━━━━━━━━━━━━━━━━
+💼 **Вакансия:** ${job}
+👤 **Имя:** ${name}
+📱 **Контакт:** ${contact}
+📝 **О себе:** ${bio}
+━━━━━━━━━━━━━━━━━━
+    `;
+
+    // 3. Отправляем запрос
+    fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: TG_CHAT_ID,
+            parse_mode: 'Markdown',
+            text: fullMessage
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Заявка успешно отправлена в центр управления!');
+            closeForm(); // Закрываем модальное окно
+            this.reset(); // Очищаем поля
+        } else {
+            alert('Произошла ошибка при отправке. Попробуйте позже.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Ошибка сети. Проверьте подключение.');
+    });
+});
