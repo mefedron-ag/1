@@ -1,0 +1,558 @@
+/* --- Variables & Reset --- */
+:root {
+    --primary-red: #ff3b3b;
+    --dark-red: #8a0000;
+    --bg-dark: #0a0505;
+    --glass-bg: rgba(20, 10, 10, 0.4);
+    --glass-border: rgba(255, 60, 60, 0.2);
+    --glass-blur: blur(20px);
+    --text-main: #ffffff;
+    --text-muted: #b0b0b0;
+    --card-radius: 24px;
+    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.bg-layer {
+    position: fixed;
+    top: -5%;   /* Запас для движения */
+    left: -5%;  /* Запас для движения */
+    width: 110%; /* Чуть больше экрана */
+    height: 110%;
+    /* Твоя картинка */
+    background: 
+        linear-gradient(rgba(10, 5, 5, 0.8), rgba(10, 5, 5, 0.8)), 
+        url('https://i.ibb.co/qYrMVv5S/16-9.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: -2; /* Самый дальний слой */
+    will-change: transform; /* Оптимизация для плавности */
+}
+
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Между фоном и контентом */
+    pointer-events: none; /* Чтобы частицы не мешали кликать на кнопки */
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* --- Background Effects (Orbs) --- */
+.background-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.6;
+    animation: floatOrb 10s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--dark-red), transparent);
+    top: -100px;
+    left: -100px;
+}
+
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #4a0000, transparent);
+    bottom: 0;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+@keyframes floatOrb {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* --- Container --- */
+.container {
+    max-width: 1300px; /* Немного расширим общий макс. размер */
+    margin: 0 auto;
+    padding: 0 40px;   /* Увеличиваем "дыхание" по бокам */
+}
+
+/* --- Header --- */
+.glass-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(10, 5, 5, 0.7);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Расстояние между лого и текстом */
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary-red);
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    /* Объединяем покраску в красный и свечение в одну строку */
+    filter: invert(34%) sepia(85%) saturate(8000%) hue-rotate(349deg) brightness(101%) contrast(110%) drop-shadow(0 0 8px rgba(255, 59, 59, 0.6));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.logo:hover .logo-img {
+    transform: scale(1.05);
+    /* При наведении используем те же параметры цвета, но чуть ярче */
+    filter: invert(34%) sepia(85%) saturate(8000%) hue-rotate(349deg) brightness(120%) contrast(120%) drop-shadow(0 0 15px rgba(255, 59, 59, 0.9));
+}
+
+.nav-link {
+    color: var(--text-main);
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--primary-red);
+    text-shadow: 0 0 10px rgba(255, 59, 59, 0.6);
+}
+
+/* --- Hero Section --- */
+.hero {
+    height: 90vh;
+    display: flex;
+    flex-direction: column; /* Важно для вертикального центрирования */
+    align-items: center;    /* Центр по горизонтали */
+    justify-content: center;/* Центр по вертикали */
+    text-align: center;
+    margin-top: 60px;
+    width: 100%;
+}
+
+.hero-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.2s;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #fff, var(--primary-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.4s;
+}
+
+.btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 38px;
+    background: var(--primary-red);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    overflow: hidden; /* Важно: чтобы блик не вылетал за границы */
+    box-shadow: 0 10px 30px rgba(255, 59, 59, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Прячем блик слева */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: all 0.6s;
+    z-index: -1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px) scale(1.05); /* Подпрыгивание и увеличение */
+    box-shadow: 0 15px 40px rgba(255, 59, 59, 0.6); /* Усиление тени */
+    letter-spacing: 1px; /* Текст слегка растягивается */
+}
+
+.btn-primary:hover::before {
+    left: 100%; /* Пролетает насквозь вправо */
+}
+
+.btn-primary i {
+    transition: transform 0.4s ease;
+}
+
+.btn-primary:hover i {
+    transform: translateX(5px); /* Стрелочка дергается вправо */
+}
+
+/* --- Ecosystem (Grid) --- */
+.section-title {
+    font-size: 2.5rem;
+    margin: 0 auto 60px auto !important; 
+    text-align: center;
+    display: table;
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.ecosystem {
+    padding: 100px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем заголовок и сетку относительно экрана */
+}
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирует карточки в ряду */
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px; /* Отступ от краев экрана для мобилок */
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: 40px 30px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    /* ЖЕСТКИЕ ПАРАМЕТРЫ РАЗМЕРА */
+    width: 320px;          /* Фиксированная ширина */
+    flex-grow: 0;          /* ЗАПРЕЩАЕМ растягиваться на весь ряд */
+    flex-shrink: 0;        /* Запрещаем сжиматься меньше 320px */
+    min-height: 300px;
+}
+
+/* Liquid Hover Effect */
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+}
+
+.glass-card:hover::before {
+    left: 100%;
+}
+
+.glass-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-red);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 59, 59, 0.1);
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: var(--primary-red);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.glass-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.glass-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Сделать OSINT карточку шире, если есть место */
+@media (min-width: 768px) {
+    .span-col {
+        grid-column: span 2;
+    }
+}
+
+/* --- Contacts --- */
+.contacts {
+    padding: 120px 0; /* Увеличили отступы секции */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* Убираем stretch, чтобы карточки не тянулись по высоте самого длинного элемента */
+    align-items: flex-start; 
+    gap: 25px;
+    margin: 40px auto 60px auto; /* Добавили отступ сверху, чтобы не липло к заголовку */
+    max-width: 1200px;
+    width: 100%;
+}
+
+.team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    
+    /* Фиксируем размеры, чтобы карточки были одинаковыми квадратиками/прямоугольниками */
+    width: 260px;
+    min-height: 220px; /* Минимальная высота, чтобы всё было в одном стиле */
+    flex: 0 0 auto;    /* Запрещаем любое неконтролируемое растягивание */
+    transition: var(--transition);
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red);
+    box-shadow: 0 10px 30px rgba(255, 59, 59, 0.2);
+}
+
+.avatar {
+    width: 80px;  /* Чуть увеличим общий размер, чтобы было место для свечения */
+    height: 80px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    position: relative;
+    /* Убираем жесткую обводку (padding и background) */
+    padding: 0; 
+    background: transparent;
+    
+    /* Создаем многослойное неоновое свечение */
+    box-shadow: 
+        0 0 10px rgba(255, 59, 59, 0.6), /* Внутреннее яркое кольцо */
+        0 0 30px rgba(255, 59, 59, 0.3), /* Среднее размытие */
+        0 0 60px rgba(255, 59, 59, 0.1); /* Широкий внешний ореол */
+        
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Картинка заполнит круг, не сжимаясь */
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.team-card:hover .avatar {
+    /* Усиливаем свечение, делаем его ярче и шире */
+    box-shadow: 
+        0 0 15px rgba(255, 59, 59, 0.9),
+        0 0 40px rgba(255, 59, 59, 0.5),
+        0 0 80px rgba(255, 59, 59, 0.3);
+    transform: scale(1.05); /* Легкое увеличение */
+}
+
+.team-card:hover .avatar img {
+    filter: brightness(1.1); /* Слегка подсвечиваем лицо */
+}
+
+.team-info {
+    text-align: center; /* Принудительно центрируем блок с именем */
+}
+
+.team-info h4 {
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+.team-info span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.glass-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid var(--primary-red);
+    transition: var(--transition);
+}
+
+.glass-btn:hover {
+    background: var(--primary-red);
+    box-shadow: 0 0 20px rgba(255, 59, 59, 0.5);
+}
+
+/* --- Footer --- */
+.glass-footer {
+    padding: 40px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* --- Animations --- */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .hero-title { font-size: 2.5rem; }
+    .span-col { grid-column: span 1; }
+}
+
+/* --- Загрузочный экран --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+    z-index: 99999;
+    display: block; /* Уходим от flex/grid */
+    transition: opacity 1s ease, visibility 1s;
+}
+
+/* Логотип строго по центру */
+.loader-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -110%); /* Смещаем чуть выше центра */
+    width: 80px;
+    height: auto;
+    opacity: 0;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+    animation: fadeInSimple 1s forwards ease-out;
+}
+
+/* Текст строго под логотипом */
+.loader-company-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20px); /* Смещаем чуть ниже центра */
+    color: #ffffff;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    white-space: nowrap; /* Чтобы текст не переносился */
+    opacity: 0;
+    animation: fadeInSimple 1s forwards ease-out;
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInSimple {
+    to { opacity: 1; }
+}
+
+#preloader.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
